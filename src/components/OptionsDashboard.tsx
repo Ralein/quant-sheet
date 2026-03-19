@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { blackScholes } from '../lib/math';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 export default function OptionsDashboard() {
   const [optionType, setOptionType] = useState<'call' | 'put'>('call');
@@ -37,6 +38,8 @@ export default function OptionsDashboard() {
     }
     return data;
   }, [optionType, spot, strike, time, riskFree, volatility, dividend]);
+
+  const { formatCurrency, currency } = useCurrency();
 
   // Format numbers securely
   const format = (val: number, decimals: number = 4) => isNaN(val) ? '0.00' : val.toFixed(decimals);
@@ -124,7 +127,7 @@ export default function OptionsDashboard() {
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-label">Theoretical Price</div>
-            <div className="stat-value" style={{ color: 'var(--accent)' }}>${format(greeks.price, 2)}</div>
+            <div className="stat-value" style={{ color: 'var(--accent)' }}>{formatCurrency(greeks.price, 2)}</div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Delta (Δ)</div>
@@ -160,18 +163,18 @@ export default function OptionsDashboard() {
                   dataKey="spot" 
                   type="number" 
                   domain={['dataMin', 'dataMax']} 
-                  tickFormatter={(val) => `$${val.toFixed(0)}`}
+                  tickFormatter={(val) => formatCurrency(val, 0)}
                   stroke="var(--text-secondary)"
                 />
                 <YAxis 
                   stroke="var(--text-secondary)"
-                  tickFormatter={(val) => `$${val.toFixed(0)}`}
+                  tickFormatter={(val) => formatCurrency(val, 0)}
                 />
                 <Tooltip 
                   contentStyle={{ backgroundColor: 'var(--bg-color)', borderColor: 'var(--panel-border)', borderRadius: '8px' }}
                   itemStyle={{ color: 'var(--text-primary)' }}
-                  formatter={(value: any) => [`$${Number(value).toFixed(2)}`, '']}
-                  labelFormatter={(label: any) => `Spot: $${Number(label).toFixed(2)}`}
+                  formatter={(value: any) => [formatCurrency(Number(value), 2), '']}
+                  labelFormatter={(label: any) => `Spot: ${formatCurrency(Number(label), 2)}`}
                 />
                 <ReferenceLine x={spot} stroke="var(--text-secondary)" strokeDasharray="3 3" label={{ position: 'top', value: 'Current Spot', fill: 'var(--text-secondary)', fontSize: 12 }} />
                 <ReferenceLine x={strike} stroke="var(--danger)" strokeDasharray="3 3" label={{ position: 'bottom', value: 'Strike', fill: 'var(--danger)', fontSize: 12 }} />

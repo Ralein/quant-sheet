@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { simulateGBM } from '../lib/risk';
@@ -13,7 +14,7 @@ export default function GBMDashboard() {
   // A trigger to allow user to specifically to re-run random simulation
   const [seed, setSeed] = useState<number>(0);
 
-  const { chartData, finalPrices, minPrice, maxPrice, averageEndPrice } = useMemo(() => {
+  const { chartData, minPrice, maxPrice, averageEndPrice } = useMemo(() => {
     // We pass `seed` strictly to depend on it for refreshing memo
     const pathsData = simulateGBM(initialPrice, expectedReturn, volatility, timeHorizon, steps, numPaths);
     

@@ -1,4 +1,4 @@
-import { normalCdf, OptionType } from './math';
+import { OptionType } from './math';
 
 interface BinomialOptionGreeks {
   price: number;
@@ -31,8 +31,8 @@ export const binomialTreeParams = (
   const discount = Math.exp(-r * dt);
 
   // Initialize option values at maturity
-  let V = new Float64Array(steps + 1);
-  let S_T = new Float64Array(steps + 1);
+  const V = new Float64Array(steps + 1);
+  const S_T = new Float64Array(steps + 1);
 
   for (let i = 0; i <= steps; i++) {
     const priceAtNode = S * Math.pow(u, steps - i) * Math.pow(d, i);
@@ -41,8 +41,8 @@ export const binomialTreeParams = (
   }
 
   // Arrays to hold previous step values for Greek calculations
-  let V_2 = new Float64Array(steps + 1);
-  let V_1 = new Float64Array(steps + 1);
+  const V_2 = new Float64Array(steps + 1);
+  const V_1 = new Float64Array(steps + 1);
 
   // Step backwards through the tree
   for (let j = steps - 1; j >= 0; j--) {
@@ -71,9 +71,7 @@ export const binomialTreeParams = (
   let delta = 0, gamma = 0, theta = 0;
   
   if (steps >= 2) {
-    const dS_up = S * u - S;
-    const dS_down = S - S * d;
-    
+            
     // Delta from step 1
     const delta_up = (V_1[0] - V_1[1]) / (S * u - S * d);
     delta = delta_up;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateCAPM, calculateKellyCriterionDiscrete, calculateKellyCriterionContinuous, calculateVaR, calculateCVaR } from '../risk';
+import { calculateCAPM, calculateKellyCriterionDiscrete, calculateKellyCriterionContinuous, calculateVaR } from '../risk';
 
 describe('risk functions', () => {
   describe('CAPM', () => {

@@ -8,9 +8,7 @@ import {
   Hexagon,
   ChevronLeft,
   ChevronRight,
-  Settings,
-  Target,
-  LineChart
+  Settings
 } from 'lucide-react';
 
 import OptionsDashboard from './components/OptionsDashboard';
@@ -20,8 +18,6 @@ import KellyDashboard from './components/KellyDashboard';
 import GBMDashboard from './components/GBMDashboard';
 import PortfolioOptimizer from './components/PortfolioOptimizer';
 import SettingsDashboard from './components/SettingsDashboard';
-import { TradeMetricsDashboard } from './components/TradeMetricsDashboard';
-import { TechnicalLevelsDashboard } from './components/TechnicalLevelsDashboard';
 import { useCurrency } from './contexts/CurrencyContext';
 
 export default function App() {
@@ -36,8 +32,6 @@ export default function App() {
     { id: 'kelly', label: 'Kelly Criterion', icon: Sliders },
     { id: 'gbm', label: 'GBM Simulation', icon: Activity },
     { id: 'portfolio', label: 'Portfolio Optimizer', icon: PieChart },
-    { id: 'trade-metrics', label: 'Trade Metrics', icon: Target },
-    { id: 'technical-levels', label: 'Technical Levels', icon: LineChart },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
@@ -109,8 +103,6 @@ export default function App() {
           {activeTab === 'kelly' && <KellyDashboard />}
           {activeTab === 'gbm' && <GBMDashboard />}
           {activeTab === 'portfolio' && <PortfolioOptimizer />}
-          {activeTab === 'trade-metrics' && <TradeMetricsDashboard />}
-          {activeTab === 'technical-levels' && <TechnicalLevelsDashboard />}
           {activeTab === 'settings' && <SettingsDashboard />}
         </div>
       </main>

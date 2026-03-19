@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { blackScholes } from '../lib/math';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -39,7 +39,17 @@ export default function OptionsDashboard() {
     return data;
   }, [optionType, spot, strike, time, riskFree, volatility, dividend]);
 
-  const { formatCurrency, currency } = useCurrency();
+  const { formatCurrency, currency, rates } = useCurrency();
+  const prevCurrency = useRef(currency);
+
+  useEffect(() => {
+    if (prevCurrency.current !== currency && rates) {
+      const ratio = rates[currency] / rates[prevCurrency.current];
+      setSpot(s => Number((s * ratio).toFixed(2)));
+      setStrike(s => Number((s * ratio).toFixed(2)));
+      prevCurrency.current = currency;
+    }
+  }, [currency, rates]);
 
   // Format numbers securely
   const format = (val: number, decimals: number = 4) => isNaN(val) ? '0.00' : val.toFixed(decimals);

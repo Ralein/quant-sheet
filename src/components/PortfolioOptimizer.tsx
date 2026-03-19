@@ -135,9 +135,9 @@ export default function PortfolioOptimizer() {
               Weights: A1: {formatPct(maxSharpePortfolio.weights[0])}, A2: {formatPct(maxSharpePortfolio.weights[1])}, A3: {formatPct(maxSharpePortfolio.weights[2])}
             </div>
           </div>
-          <div className="stat-card" style={{ borderColor: 'var(--positive)' }}>
+          <div className="stat-card" style={{ borderColor: 'var(--success)' }}>
             <div className="stat-label">Minimum Risk Portfolio</div>
-            <div className="stat-value" style={{ color: 'var(--positive)' }}>Risk: {formatPct(minRiskPortfolio.risk)}</div>
+            <div className="stat-value" style={{ color: 'var(--success)' }}>Risk: {formatPct(minRiskPortfolio.risk)}</div>
             <div className="stat-label" style={{ marginTop: '0.5rem' }}>
               Return: {formatPct(minRiskPortfolio.return)} | SR: {minRiskPortfolio.sharpeRatio.toFixed(2)}
             </div>
@@ -190,7 +190,7 @@ export default function PortfolioOptimizer() {
                     const isMinRisk = entry === minRiskPortfolio;
                     
                     if (isMaxSharpe) return <Cell key={`cell-${index}`} fill="var(--accent)" fillOpacity={1} r={6} />;
-                    if (isMinRisk) return <Cell key={`cell-${index}`} fill="var(--positive)" fillOpacity={1} r={6} />;
+                    if (isMinRisk) return <Cell key={`cell-${index}`} fill="var(--success)" fillOpacity={1} r={6} />;
                     
                     // Color based on Sharpe ratio
                     const opacity = Math.max(0.2, Math.min(1, entry.sharpeRatio / maxSharpePortfolio.sharpeRatio));

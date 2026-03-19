@@ -6,6 +6,9 @@ interface CurrencyContextType {
   currency: Currency;
   setCurrency: (c: Currency) => void;
   formatCurrency: (val: number, decimals?: number) => string;
+  rates: Record<Currency, number>;
+  setRate: (c: Currency, rate: number) => void;
+  resetRates: () => void;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
@@ -18,15 +21,45 @@ const symbols: Record<Currency, string> = {
   INR: '₹'
 };
 
+const exchangeRates: Record<Currency, number> = {
+  USD: 1,
+  EUR: 0.92,
+  GBP: 0.79,
+  JPY: 150.0,
+  INR: 83.0
+};
+
 export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currency, setCurrency] = useState<Currency>('USD');
+  const [rates, setRates] = useState<Record<Currency, number>>(() => {
+    const saved = localStorage.getItem('exchangeRates');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved rates');
+      }
+    }
+    return { ...exchangeRates };
+  });
+
+  const setRate = (c: Currency, rate: number) => {
+    const newRates = { ...rates, [c]: rate };
+    setRates(newRates);
+    localStorage.setItem('exchangeRates', JSON.stringify(newRates));
+  };
+
+  const resetRates = () => {
+    setRates({ ...exchangeRates });
+    localStorage.removeItem('exchangeRates');
+  };
 
   const formatCurrency = (val: number, decimals: number = 2) => {
     return `${symbols[currency]}${val.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
   };
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, formatCurrency }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency, formatCurrency, rates, setRate, resetRates }}>
       {children}
     </CurrencyContext.Provider>
   );

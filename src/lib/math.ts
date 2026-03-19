@@ -88,3 +88,51 @@ export const blackScholes = (
 
   return { price, delta, gamma, theta: theta / 365, vega: vega / 100, rho: rho / 100 };
 };
+
+/**
+ * Capital Asset Pricing Model (CAPM) Expected Return
+ * @param riskFree Risk-free rate (decimal)
+ * @param marketReturn Expected market return (decimal)
+ * @param beta Asset Beta
+ */
+export const capmReturn = (riskFree: number, marketReturn: number, beta: number): number => {
+  return riskFree + beta * (marketReturn - riskFree);
+};
+
+/**
+ * Kelly Criterion (f*) Fraction
+ * @param winProb Probability of winning (decimal, 0 to 1)
+ * @param winLossRatio Win/Loss ratio (b in the formula)
+ */
+export const kellyFraction = (winProb: number, winLossRatio: number): number => {
+  if (winLossRatio <= 0) return 0;
+  const q = 1 - winProb;
+  const f = (winProb * winLossRatio - q) / winLossRatio;
+  return Math.max(0, f); // f* shouldn't be negative in basic sizing
+};
+
+/**
+ * 2-Asset Portfolio Performance
+ * @param w1 Weight of asset 1 (decimal)
+ * @param r1 Expected return of asset 1 (decimal)
+ * @param r2 Expected return of asset 2 (decimal)
+ * @param v1 Volatility of asset 1 (decimal)
+ * @param v2 Volatility of asset 2 (decimal)
+ * @param correlation Correlation coefficient between the two assets (-1 to 1)
+ */
+export const portfolioTwoAsset = (
+  w1: number,
+  r1: number,
+  r2: number,
+  v1: number,
+  v2: number,
+  correlation: number
+) => {
+  const w2 = 1 - w1;
+  const expectedReturn = w1 * r1 + w2 * r2;
+  const variance = w1 * w1 * v1 * v1 + w2 * w2 * v2 * v2 + 2 * w1 * w2 * v1 * v2 * correlation;
+  return {
+    expectedReturn,
+    volatility: Math.sqrt(Math.max(0, variance))
+  };
+};

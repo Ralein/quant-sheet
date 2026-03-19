@@ -352,9 +352,12 @@ input:focus, select:focus {
 }
 
 .stat-value {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-value.positive { color: var(--success); }

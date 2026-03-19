@@ -42,7 +42,7 @@ export default function App() {
         <div className="brand">
           <div className="brand-logo">
             <Hexagon className="brand-icon" size={24} />
-            {!isSidebarCollapsed && <span>QuantSheet</span>}
+            <span className="brand-text">QuantSheet</span>
           </div>
         </div>
 
@@ -61,10 +61,10 @@ export default function App() {
                 key={item.id}
                 className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
                 onClick={() => setActiveTab(item.id)}
-                title={isSidebarCollapsed ? item.label : undefined}
+                title={item.label}
               >
                 <Icon strokeWidth={2.5} />
-                {!isSidebarCollapsed && item.label}
+                <span className="nav-label">{item.label}</span>
               </div>
             );
           })}

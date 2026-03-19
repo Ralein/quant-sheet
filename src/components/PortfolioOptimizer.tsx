@@ -71,7 +71,7 @@ export default function PortfolioOptimizer() {
           Asset Parameters (3 Assets)
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.5rem' }}>
           <div className="form-group">
             <label>Asset 1 Return (μ)</label>
             <input type="number" value={ret1} onChange={(e) => setRet1(Number(e.target.value))} step="0.01" />
@@ -101,7 +101,7 @@ export default function PortfolioOptimizer() {
         </div>
 
         <h3 style={{ fontSize: '1rem', marginTop: '0.5rem' }}>Correlations (-1 to 1)</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(90px, 1fr))', gap: '0.5rem' }}>
           <div className="form-group">
             <label>Corr(1, 2)</label>
             <input type="number" value={corr12} onChange={(e) => setCorr12(Math.max(-1, Math.min(1, Number(e.target.value))))} step="0.1" min="-1" max="1" />
@@ -124,7 +124,7 @@ export default function PortfolioOptimizer() {
 
       {/* Results Panel */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div className="stats-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+        <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
           <div className="stat-card" style={{ borderColor: 'var(--accent)' }}>
             <div className="stat-label">Maximum Sharpe Ratio Portfolio</div>
             <div className="stat-value" style={{ color: 'var(--accent)' }}>SR: {maxSharpePortfolio.sharpeRatio.toFixed(2)}</div>

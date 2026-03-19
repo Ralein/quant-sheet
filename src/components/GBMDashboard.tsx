@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { simulateGBM } from '../lib/risk';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 export default function GBMDashboard() {
   const [initialPrice, setInitialPrice] = useState<number>(100);
@@ -50,7 +51,7 @@ export default function GBMDashboard() {
     };
   }, [initialPrice, expectedReturn, volatility, timeHorizon, steps, numPaths, seed]); // `seed` makes it recalculate on "Run Simulation"
 
-  const formatCurrency = (val: number) => `$${val.toFixed(2)}`;
+  const { formatCurrency, currency } = useCurrency();
 
   return (
     <div className="dashboard-grid">
@@ -172,9 +173,9 @@ export default function GBMDashboard() {
                 />
                 <YAxis 
                   domain={['auto', 'auto']}
-                  tickFormatter={(val) => `$${val}`}
+                  tickFormatter={(val) => formatCurrency(val, 0)}
                   stroke="var(--text-secondary)"
-                  label={{ value: 'Price ($)', angle: -90, position: 'insideLeft', fill: 'var(--text-secondary)' }}
+                  label={{ value: `Price (${currency})`, angle: -90, position: 'insideLeft', fill: 'var(--text-secondary)' }}
                 />
                 <Tooltip 
                   labelFormatter={(val) => `Time: ${val} Years`}

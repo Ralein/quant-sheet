@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 import { calculateVaR, calculateCVaR } from '../lib/risk';
+import { useCurrency } from '../contexts/CurrencyContext';
 
 // Simple Box-Muller transform for normal distribution
 const generateNormalReturn = (mu: number, sigma: number) => {
@@ -74,7 +75,8 @@ export default function VaRDashboard() {
     };
   }, [portfolioValue, mu, sigma, confidenceInfo, horizon, simulationDays]);
 
-  const formatCurrency = (val: number) => '$' + val.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  const { formatCurrency: contextFormatCurrency, currency } = useCurrency();
+  const formatCurrencyLocal = (val: number) => contextFormatCurrency(val, 0);
   const formatPct = (val: number) => (val * 100).toFixed(2) + '%';
 
   return (
@@ -84,7 +86,7 @@ export default function VaRDashboard() {
         <h2 style={{ marginBottom: '1.5rem', fontSize: '1.2rem' }}>Parameters</h2>
         
         <div className="form-group">
-          <label>Initial Portfolio Value ($)</label>
+          <label>Initial Portfolio Value ({currency})</label>
           <input 
             type="number" 
             value={portfolioValue} 
@@ -142,12 +144,12 @@ export default function VaRDashboard() {
         <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
           <div className="stat-card">
             <div className="stat-label">Value at Risk (VaR)</div>
-            <div className="stat-value negative">{formatCurrency(varValue)}</div>
+            <div className="stat-value negative">{formatCurrencyLocal(varValue)}</div>
             <div className="stat-label" style={{ marginTop: '0.25rem' }}>{formatPct(varPercentage)} of Portfolio</div>
           </div>
           <div className="stat-card">
             <div className="stat-label">Expected Shortfall (CVaR)</div>
-            <div className="stat-value negative">{formatCurrency(cvarValue)}</div>
+            <div className="stat-value negative">{formatCurrencyLocal(cvarValue)}</div>
             <div className="stat-label" style={{ marginTop: '0.25rem' }}>{formatPct(cvarPercentage)} of Portfolio</div>
           </div>
           <div className="stat-card">

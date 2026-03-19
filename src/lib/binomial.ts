@@ -1,4 +1,4 @@
-import { OptionType } from './math';
+import type { OptionType } from './math';
 
 interface BinomialOptionGreeks {
   price: number;

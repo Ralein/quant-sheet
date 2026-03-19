@@ -13,9 +13,7 @@ import VaRDashboard from './components/VaRDashboard';
 import CAPMDashboard from './components/CAPMDashboard';
 import KellyDashboard from './components/KellyDashboard';
 import GBMDashboard from './components/GBMDashboard';
-
-// We will build these components in the following steps
-const PortfolioOptimizer = () => <div className="glass-panel"><p>Mean-Variance Portfolio Optimization coming soon.</p></div>;
+import PortfolioOptimizer from './components/PortfolioOptimizer';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('options');

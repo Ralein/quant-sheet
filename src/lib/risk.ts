@@ -189,3 +189,62 @@ export const simulateGBM = (
   
   return paths;
 };
+
+/**
+ * Calculates the expected return of a portfolio.
+ * @param weights Array of asset weights (should sum to 1)
+ * @param returns Array of expected returns for each asset
+ */
+export const calculatePortfolioReturn = (weights: number[], returns: number[]): number => {
+  return weights.reduce((sum, w, i) => sum + w * returns[i], 0);
+};
+
+/**
+ * Calculates the variance of a portfolio given weights and a covariance matrix.
+ * @param weights Array of asset weights
+ * @param covMatrix 2D array representing the covariance matrix
+ */
+export const calculatePortfolioVariance = (weights: number[], covMatrix: number[][]): number => {
+  let variance = 0;
+  for (let i = 0; i < weights.length; i++) {
+    for (let j = 0; j < weights.length; j++) {
+      variance += weights[i] * weights[j] * covMatrix[i][j];
+    }
+  }
+  return Math.max(0, variance);
+};
+
+/**
+ * Generates random portfolios (weights) to simulate the Markowitz efficient frontier.
+ * Returns array of objects with risk(volatility), return, and Sharpe Ratio
+ */
+export const simulateEfficientFrontier = (
+  expectedReturns: number[],
+  covMatrix: number[][],
+  riskFreeRate: number = 0.02,
+  numPortfolios: number = 500
+): { risk: number; return: number; sharpeRatio: number; weights: number[] }[] => {
+  const portfolios = [];
+  const numAssets = expectedReturns.length;
+  
+  for (let i = 0; i < numPortfolios; i++) {
+    // Generate random weights that sum to 1
+    let weights = Array.from({ length: numAssets }, () => Math.random());
+    const sum = weights.reduce((acc, val) => acc + val, 0);
+    weights = weights.map(w => w / sum);
+    
+    const portReturn = calculatePortfolioReturn(weights, expectedReturns);
+    const portVar = calculatePortfolioVariance(weights, covMatrix);
+    const portVol = Math.sqrt(portVar);
+    const sharpeRatio = portVol > 0 ? (portReturn - riskFreeRate) / portVol : 0;
+    
+    portfolios.push({
+      risk: portVol,
+      return: portReturn,
+      sharpeRatio: sharpeRatio,
+      weights: weights
+    });
+  }
+  
+  return portfolios;
+};

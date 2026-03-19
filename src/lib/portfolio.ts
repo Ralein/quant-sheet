@@ -1,4 +1,3 @@
-import { jStat } from 'jstat';
 
 export interface PortfolioAsset {
   symbol: string;

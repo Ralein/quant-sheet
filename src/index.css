@@ -1,16 +1,16 @@
 :root {
   --bg-color: #0d1117;
-  --panel-bg: rgba(22, 27, 34, 0.7);
-  --panel-border: rgba(255,255,255,0.08);
-  --text-primary: #e6edf3;
+  --panel-bg: rgba(22, 27, 34, 0.4);
+  --panel-border: rgba(255,255,255,0.06);
+  --text-primary: #f0f6fc;
   --text-secondary: #8b949e;
   --accent: #58a6ff;
   --accent-hover: #3182ce;
-  --accent-glow: rgba(88, 166, 255, 0.15);
-  --danger: #f85149;
+  --accent-glow: rgba(88, 166, 255, 0.2);
+  --danger: #ff7b72;
   --success: #3fb950;
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -54,23 +54,36 @@ p { color: var(--text-secondary); line-height: 1.5; }
 
 .main-content {
   flex: 1;
-  padding: 2rem 3rem;
+  padding: 2.5rem 4rem;
   overflow-y: auto;
   position: relative;
+  background: radial-gradient(circle at 50% -20%, rgba(88, 166, 255, 0.1), transparent 70%);
 }
 
 /* Subtle background glow effect */
 .main-content::before {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 300px;
-  background: radial-gradient(ellipse at top, var(--accent-glow) 0%, transparent 70%);
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
+  filter: blur(80px);
+}
+.main-content::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(163, 113, 247, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
 }
 
 .content-wrapper {
@@ -136,12 +149,17 @@ p { color: var(--text-secondary); line-height: 1.5; }
 /* Shared Panel components for the tools */
 .glass-panel {
   background: var(--panel-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--panel-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .page-header {

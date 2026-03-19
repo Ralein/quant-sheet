@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { simulateGBM } from '../lib/risk';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -51,7 +51,16 @@ export default function GBMDashboard() {
     };
   }, [initialPrice, expectedReturn, volatility, timeHorizon, steps, numPaths, seed]); // `seed` makes it recalculate on "Run Simulation"
 
-  const { formatCurrency, currency } = useCurrency();
+  const { formatCurrency, currency, rates } = useCurrency();
+  const prevCurrency = useRef(currency);
+
+  useEffect(() => {
+    if (prevCurrency.current !== currency && rates) {
+      const ratio = rates[currency] / rates[prevCurrency.current];
+      setInitialPrice(p => Math.max(1, Math.round(p * ratio)));
+      prevCurrency.current = currency;
+    }
+  }, [currency, rates]);
 
   return (
     <div className="dashboard-grid">

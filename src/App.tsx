@@ -7,7 +7,8 @@ import {
   Sliders, 
   Hexagon,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Settings
 } from 'lucide-react';
 
 import OptionsDashboard from './components/OptionsDashboard';
@@ -16,6 +17,7 @@ import CAPMDashboard from './components/CAPMDashboard';
 import KellyDashboard from './components/KellyDashboard';
 import GBMDashboard from './components/GBMDashboard';
 import PortfolioOptimizer from './components/PortfolioOptimizer';
+import SettingsDashboard from './components/SettingsDashboard';
 import { useCurrency } from './contexts/CurrencyContext';
 
 export default function App() {
@@ -30,6 +32,7 @@ export default function App() {
     { id: 'kelly', label: 'Kelly Criterion', icon: Sliders },
     { id: 'gbm', label: 'GBM Simulation', icon: Activity },
     { id: 'portfolio', label: 'Portfolio Optimizer', icon: PieChart },
+    { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
   return (
@@ -37,9 +40,18 @@ export default function App() {
       {/* Sidebar Navigation */}
       <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="brand">
-          <Hexagon className="brand-icon" size={24} />
-          {!isSidebarCollapsed && <span>QuantSheet</span>}
+          <div className="brand-logo">
+            <Hexagon className="brand-icon" size={24} />
+            {!isSidebarCollapsed && <span>QuantSheet</span>}
+          </div>
         </div>
+
+        <button 
+          className="collapse-btn-edge" 
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        >
+          {isSidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
         
         <nav className="nav-menu">
           {navItems.map((item) => {
@@ -57,14 +69,6 @@ export default function App() {
             );
           })}
         </nav>
-
-        <button 
-          className="collapse-btn" 
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        >
-          {isSidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          {!isSidebarCollapsed && <span>Collapse</span>}
-        </button>
       </aside>
 
       {/* Main Content Area */}
@@ -99,6 +103,7 @@ export default function App() {
           {activeTab === 'kelly' && <KellyDashboard />}
           {activeTab === 'gbm' && <GBMDashboard />}
           {activeTab === 'portfolio' && <PortfolioOptimizer />}
+          {activeTab === 'settings' && <SettingsDashboard />}
         </div>
       </main>
     </div>

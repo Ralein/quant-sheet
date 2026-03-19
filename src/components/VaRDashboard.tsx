@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from 'recharts';
 import { calculateVaR, calculateCVaR } from '../lib/risk';
 import { useCurrency } from '../contexts/CurrencyContext';
@@ -75,7 +75,17 @@ export default function VaRDashboard() {
     };
   }, [portfolioValue, mu, sigma, confidenceInfo, horizon, simulationDays]);
 
-  const { formatCurrency: contextFormatCurrency, currency } = useCurrency();
+  const { formatCurrency: contextFormatCurrency, currency, rates } = useCurrency();
+  const prevCurrency = useRef(currency);
+
+  useEffect(() => {
+    if (prevCurrency.current !== currency && rates) {
+      const ratio = rates[currency] / rates[prevCurrency.current];
+      setPortfolioValue(v => Math.round(v * ratio));
+      prevCurrency.current = currency;
+    }
+  }, [currency, rates]);
+
   const formatCurrencyLocal = (val: number) => contextFormatCurrency(val, 0);
   const formatPct = (val: number) => (val * 100).toFixed(2) + '%';
 

@@ -49,7 +49,7 @@ p { color: var(--text-secondary); line-height: 1.5; }
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow-y: auto;
+  z-index: 100;
   transition: width 0.3s ease;
 }
 
@@ -133,23 +133,63 @@ p { color: var(--text-secondary); line-height: 1.5; }
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: space-between;
   padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
 }
 
 .brand-icon {
   color: var(--accent);
 }
 
+.collapse-btn-edge {
+  position: absolute;
+  top: 1.6rem;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--panel-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 10;
+  transition: var(--transition);
+}
+
+.collapse-btn-edge:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.sidebar.collapsed .brand {
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+
 /* Navigation Links */
 .nav-menu {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .nav-item {
@@ -243,6 +283,7 @@ label {
 input[type="number"], 
 input[type="text"],
 select {
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--panel-border);
   border-radius: 6px;
@@ -283,7 +324,7 @@ input:focus, select:focus {
 /* Grids */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 350px 1fr;
   gap: 1.5rem;
   align-items: start;
 }

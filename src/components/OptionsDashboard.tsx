@@ -9,6 +9,7 @@ export default function OptionsDashboard() {
   const [spot, setSpot] = useState<number>(100);
   const [strike, setStrike] = useState<number>(100);
   const [time, setTime] = useState<number>(1); // Years
+  const [expiryDate, setExpiryDate] = useState<string>('');
   const [riskFree, setRiskFree] = useState<number>(0.05); // 5%
   const [volatility, setVolatility] = useState<number>(0.2); // 20%
   const [dividend, setDividend] = useState<number>(0);
@@ -92,12 +93,36 @@ export default function OptionsDashboard() {
         </div>
 
         <div className="form-group">
+          <label>Expiry Date</label>
+          <input 
+            type="date" 
+            value={expiryDate} 
+            onChange={(e) => {
+              const val = e.target.value;
+              setExpiryDate(val);
+              if (val) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const [year, month, day] = val.split('-').map(Number);
+                const expiry = new Date(year, month - 1, day);
+                const diffTime = expiry.getTime() - today.getTime();
+                const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+                setTime(Math.max(0.0001, Number(diffYears.toFixed(4))));
+              }
+            }} 
+          />
+        </div>
+
+        <div className="form-group">
           <label>Time to Expiry (Years)</label>
           <input 
             type="number" 
             value={time} 
-            onChange={(e) => setTime(Number(e.target.value))} 
-            min="0.001" step="0.1"
+            onChange={(e) => {
+              setTime(Number(e.target.value));
+              setExpiryDate('');
+            }} 
+            min="0.001" step="0.01"
           />
         </div>
 

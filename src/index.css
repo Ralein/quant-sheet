@@ -26,6 +26,7 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   margin: 0;
+  color-scheme: dark;
 }
 
 /* Typography */
@@ -290,6 +291,7 @@ label {
 
 input[type="number"], 
 input[type="text"],
+input[type="date"],
 select {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.05);
